@@ -3,3 +3,12 @@ The goals of bkjs javascript framework:
 (1) Do as much display logic as possible on the client side
 (2) Don't hit the server unless necessary, 
 (3) use html5 pushState for links if available, fallback to hashbang
+
+License for most files: AGPLv3 copyright Ben Kinsey.  
+Other licenses available for a small fee.
+
+Files I don't own the copyright of:
+js/Class.js: MIT license, copyright John Resig
+js/jquery-1.5.2.min.js: Dual Licensed: MIT/GPLv2, copyright John Resig
+and includes Sizzle.js, Triple Licensed: MIT/BSD/GPL, copyright Dojo Foundation
+ 
