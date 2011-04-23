@@ -1,0 +1,75 @@
+var Sidenav_Item = Class.extend({
+  init : function( elem, url, nav, sidenav_item_id ) {
+    this.elem = elem;
+    this.child_elems = {};
+    this.child_items = {};
+    this.update( url, nav );
+  },
+  update : function( url, nav, sidenav_item_id ) {
+    if (url) this.url = url;
+    if (nav) this.nav = nav;
+    if (sidenav_item_id) this.sidenav_item_id = sidenav_item_id;
+    this.elem.attr( 'id', this.sidenav_item_id );
+    this.url_children = this.nav.get_url_children( url );
+
+    if ($( '#' + this.get_anchor_id() ).length) {
+      this.anchor_elem = $( '#' + this.get_anchor_id() );
+    } else {
+      this.anchor_elem = $( '<a/>' );
+      this.elem.append( this.anchor );
+    }
+    var anchor_title = this.nav.get_title_by_url( url );
+    this.anchor = new Anchor( this.anchor_elem, url, anchor_title);
+    var has_child_nodes = this.url_children.hasChildNodes();
+    var url_in_pathname = this.nav.url_in_url( url, location.pathname );
+    
+    if ( has_child_nodes && url_in_pathname ) {
+      this.expand();
+    } else {
+      this.unexpand();
+    }
+  },
+  expand : function () {
+
+    if ($( '#' + this.get_ul_id() ).length) {
+      this.ul_elem = $( '#' + this.get_ul_id() );
+    } else {
+      this.ul_elem = $( '<ul/>' );
+      this.elem.append( this.ul_elem );
+    }
+    this.ul_elem.show();
+
+    for (child_url in this.url_children) {
+      var child_sidenav_item_id = this.get_sidenav_item_id( child_url );
+
+      if ($( '#' + child_sidenav_item_id ).length) {
+        this.child_elems[child_url] = $( '#' + child_sidenav_item_id );
+      } else {
+        this.child_elems[child_url] = $( '<li/>' );
+        this.ul.append( this.child_elems[child_url] );
+      }
+
+      if (this.child_items[url]) {
+        this.child_items[url].update( url, this.nav, child_sidenav_item_id );
+      } else {
+	var child_elem = this.child_elems[url];
+        this.child_items[url] = new Sidenav_Item( child_elem, url, this.nav, child_sidenav_item_id );
+      }
+    }
+  },
+  unexpand : function () {
+    if (! this.ul && $( '#' + this.get_ul_id() ).length) {
+      this.ul = $( '#' + this.get_ul_id() );
+    }
+    this.ul.hide();
+  },
+  get_ul_id : function () {
+    return this.sidenav_item_id + '_ul';
+  },
+  get_anchor_id : function () {
+    return this.sidenav_item_id + '_a';
+  },
+  get_sidenav_item_id : function( url ) {
+      return this.sidenav_item_id + '_' + url.replace(/\//g, '__');
+  }
+});

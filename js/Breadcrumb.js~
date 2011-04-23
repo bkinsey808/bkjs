@@ -1,0 +1,71 @@
+var Breadcrumb = Class.extend({
+  max_breadcrumb_links : 10,
+
+  init : function( elem, nav, breadcrumb_id ) {
+    this.elem = elem;
+    this.nav = nav;
+    this.breadcrumb_id = breadcrumb_id;
+    this.breadcrumb_links = [];
+
+    if ($( '#' + breadcrumb_id + '_nav' ).length) {
+      this.breadcrumb_nav = $( '#' + breadcrumb_id + '_nav' );
+    } else {
+      this.breadcrumb_nav = $( '<nav/>' );
+      this.elem.append( this.breadcrumb_nav );
+    }
+
+    if ($( '#' + breadcrumb_id + '_ul' ).length) {
+      this.breadcrumb_ul = $( '#' + breadcrumb_id + '_ul' );
+    } else {
+      this.breadcrumb_ul = $( '<ul/>' );
+      this.breadcrumb_nav.append( this.breadcrumb_ul );
+    }
+
+    this.update( nav, breadcrumb_id );
+  },
+  update : function( nav, breadcrumb_id ) {
+    if (nav) this.nav = nav;
+    if (breadcrumb_id) this.breadcrumb_id = breadcrumb_id;
+    var current_level = this.nav.get_level();
+
+    for (var i = 0; i <= current_level; i++) {
+      var url = this.nav.get_url_by_level(i);
+      var url_level = this.nav.get_level_by_url( url );
+
+      if (this.nav.url_exists( url ) && url_level == i) {
+        this.set_link_at_level( i, url );
+      } else {
+        this.remove_link_at_level(i);
+      }
+    }
+
+    for (var i = current_level + 1; i <= this.max_breadcrumb_links; i++) {
+      this.remove_link_at_level(i);
+    }
+  },
+  set_link_at_level : function( level, url ) {
+    var title = this.nav.get_title_by_level( level );
+    var link_id = this.get_breadcrumb_link_id( level );
+
+    if (this.breadcrumb_links[level]) {
+      this.breadcrumb_links[level].update( url, title, level, this.breadcrumb_id );
+    } else {
+      var bld;
+
+      if ($( '#' + link_id ).length) {
+        bld = $( '#' + link_id );
+      } else {
+        bld = $( '<li/>' );
+        this.breadcrumb_ul.append( bld );
+      }
+      this.breadcrumb_links[level] = new Breadcrumb_Link( bld, url, title, level, this.breadcrumb_id );
+    }
+  },
+  remove_link_at_level : function( level ) {
+    link_id = this.get_breadcrumb_link_id( level );
+    if ($( '#' + link_id) ) $( '#' + link_id ).remove();
+  },
+  get_breadcrumb_link_id : function( level ) {
+    return this.breadcrumb_id + '_' + level;
+  }
+});

@@ -1,0 +1,44 @@
+var Sidenav = Class.extend({
+  init : function( elem, nav, sidenav_id ) {
+    this.elem = elem;
+    this.child_elems = {};
+    this.child_items = {};
+    this.update( sidenav_id, nav );
+  },
+  update : function( sidenav_id, nav ) {
+    if (nav) this.nav = nav;
+    if (sidenav_id) this.sidenav_id = sidenav_id;
+    this.url_children = this.nav.get_url_children( '/' );
+
+    if ($( '#' + this.get_ul_id() ).length) {
+      this.ul = $( '#' + this.get_ul_id() );
+    } else {
+      this.ul = $( '<ul/>' );
+      this.elem.append( this.ul );
+    }
+
+    for (child_url in this.url_children) {
+      var child_sidenav_item_id = this.get_sidenav_item_id( child_url );
+
+      if ($( '#' + child_sidenav_item_id ).length) {
+        this.child_elems[child_url] = $( '#' + child_sidenav_item_id );
+      } else {
+        this.child_elems[child_url] = $( '<li/>' );
+        this.ul.append( this.child_elems[child_url] );
+      }
+
+      if (this.child_items[child_url]) {
+        this.child_items[child_url].update( child_url, this.nav, child_sidenav_item_id );
+      } else {
+        alert("s is set?" + this.child_elems[child_url]);
+        this.child_items[url] = new Sidenav_Item( this.child_elems[child_url], child_url, this.nav, child_sidenav_item_id );
+      }
+    }
+  },
+  get_ul_id : function () {
+    return this.sidenav_id + '_ul';
+  },
+  get_sidenav_item_id : function( url ) {
+      return this.sidenav_id + '_' + url.replace(/\//g, '__');
+  }
+});
