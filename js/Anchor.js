@@ -28,7 +28,7 @@ var Anchor = Class.extend({
     if (url) this.url = url;
     if (display) this.display = display;
     this.update_display();
-    this.elem.attr('href', "javascript:change_url('" + url + "')");
+    this.elem.attr('href', "javascript:nav.change_url('" + url + "')");
   },
   update_display : function( display ) {
     this.elem.html(this.display);

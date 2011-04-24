@@ -17,11 +17,34 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var Nav = Class.extend({
-  init : function( nav_object) {
+  init : function( nav_object, update_callback ) {
+    if (! this.browser_supports_pushState() && ! location.hash) {
+      window.location = '/#!' + location.pathname;
+    }
     this.nav_object = nav_object;
+    if (update_callback) this.update_callback = update_callback();
+    this.previous_href = window.location.href;
+    this.set_pathname();
+    document.title = this.get_title();
+    window.onpopstate = this.detect_href_change;
+    window.onpushstate = this.detect_href_change;
+  },
+  set_update_callback : function( update_callback ) {
+    this.update_callback = update_callback;
+  },
+  set_pathname : function( url ) {
+    if (url) { 
+      this.pathname = url;
+      return;
+    }
+    if ( location.hash && location.pathname == '/') {
+      this.pathname = location.hash.substring( 2 );
+    } else {
+      this.pathname = location.pathname;
+    }
   },
   get_title : function() {
-    return this.get_title_by_url( location.pathname );
+    return this.get_title_by_url( this.pathname );
   },
   get_title_by_url : function ( url ) {
     if (!url) return this.nav_object['/'];
@@ -32,7 +55,7 @@ var Nav = Class.extend({
     return this.get_title_by_url( url );
   },
   get_level : function() {
-    return this.get_level_by_url( location.pathname );
+    return this.get_level_by_url( this.pathname );
   },
   get_level_by_url : function( url ) {
     if (url == '/') return 0;
@@ -40,7 +63,7 @@ var Nav = Class.extend({
   },
   get_url_by_level : function ( level ) {
     if ( level == 0 ) return '/';
-    var pathname_array = location.pathname.split('/');
+    var pathname_array = this.pathname.split('/');
     var url = '';
     level++;
 
@@ -96,5 +119,37 @@ var Nav = Class.extend({
     }
 
     return url_children;
+  },
+  change_url : function( url ) {
+    var stateObj = { foo: "bar" };
+    if (! url) url = '/';
+    var new_href = location.protocol + "//" + location.hostname + url;
+    if (location.href == new_href) return;
+
+    if (this.browser_supports_pushState()) {
+      this.previous_href = window.location.href;
+      history.pushState( stateObj, null, url );
+      if (this.previous_href != window.location.href) this.change();
+    } else {
+      this.change( url );
+      window.location.href = '/#!' + url;
+    }
+    return;
+  },
+  browser_supports_pushState : function() {
+    return !(typeof history.pushState === 'undefined');
+  },
+  detect_href_change : function( event ) {
+    if (window.location.href != this.previous_href) {
+      this.previous_href = window.location.href;
+      this.change();
+    }
+  },
+  change : function( url ) {
+    nav.set_pathname( url );
+    document.title = this.get_title();
+    if (this.update_callback) {
+      this.update_callback();
+    }
   }
 });

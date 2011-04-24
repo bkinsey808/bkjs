@@ -29,11 +29,13 @@ var Sidenav_Item = Class.extend({
     if (sidenav_id) this.sidenav_id = sidenav_id;
     this.sidenav_item_id = this.get_sidenav_item_id( this.url );
     this.elem.attr( 'id', this.sidenav_item_id );
-    this.url_children = this.nav.get_url_children( this.url );
     this.update_anchor();
-
+    this.maybe_expand_or_unexpand();
+  },
+  maybe_expand_or_unexpand : function() {
+    this.url_children = this.nav.get_url_children( this.url );
     var has_children = this.has_children( this.url_children );
-    var url_in_pathname = this.nav.url_in_url( url, location.pathname );
+    var url_in_pathname = this.nav.url_in_url( this.url, this.nav.pathname );
     
     if ( has_children && url_in_pathname ) {
       this.expand();
@@ -56,7 +58,7 @@ var Sidenav_Item = Class.extend({
   },
   has_children : function ( url_children ) {
     for (var url in url_children) {
-	if (url_children.hasOwnProperty( url )) return true;      
+      if (url_children.hasOwnProperty( url )) return true;      
     }
     return false;
   },

@@ -32,6 +32,8 @@ var Sidenav = Class.extend({
     if (nav) this.nav = nav;
     if (sidenav_id) this.sidenav_id = sidenav_id;
     this.url_children = this.nav.get_url_children( '/' );
+    this.set_aside();
+    this.set_nav();
     this.set_ul();
 
     for (child_url in this.url_children) {
@@ -48,6 +50,29 @@ var Sidenav = Class.extend({
       this.child_items[child_url] = new Sidenav_Item( child_elem, child_url, this.nav, this.sidenav_id );
     }
   },
+  set_aside : function() {
+    var aside_id = this.get_aside_id();
+
+    if ($( '#' + aside_id ).length) {
+      this.aside_elem = $( '#' + aside_id );
+    } else {
+      this.aside_elem = $( '<aside/>' );
+      this.elem.append( this.aside_elem );
+    }
+    this.aside_elem.attr('id', aside_id);
+    this.aside_elem.attr('role', 'complementary');
+  },
+  set_nav : function() {
+    var nav_id = this.get_nav_id();
+
+    if ($( '#' + nav_id ).length) {
+      this.nav_elem = $( '#' + nav_id );
+    } else {
+      this.nav_elem = $( '<nav/>' );
+      this.aside_elem.append( this.nav_elem );
+    }
+    this.nav_elem.attr('id', nav_id);
+  },
   set_ul : function() {
     var ul_id = this.get_ul_id();
 
@@ -55,7 +80,7 @@ var Sidenav = Class.extend({
       this.ul_elem = $( '#' + ul_id );
     } else {
       this.ul_elem = $( '<ul/>' );
-      this.elem.append( this.ul_elem );
+      this.nav_elem.append( this.ul_elem );
     }
     this.ul_elem.attr('id', ul_id);
   },
@@ -68,6 +93,12 @@ var Sidenav = Class.extend({
       this.child_elems[child_url] = $( '<li/>' );
       this.ul_elem.append( this.child_elems[child_url] );
     }
+  },
+  get_aside_id : function() {
+    return this.sidenav_id + '_aside';
+  },
+  get_nav_id : function() {
+    return this.sidenav_id + '_nav';
   },
   get_ul_id : function() {
     return this.sidenav_id + '_ul';

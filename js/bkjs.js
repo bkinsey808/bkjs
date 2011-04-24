@@ -17,6 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 var nav_object = {};
 nav_object['/'] = 'Home';
 nav_object['/tm1'] = 'Top Level Menu 1';
@@ -27,68 +28,17 @@ nav_object['/bar1/bar2b'] = 'Bar 2b';
 nav_object['/bar1/bar2b/a'] = 'Bar 2b a';
 nav_object['/bar1/bar2b/b'] = 'Bar 2b b';
 
-var nav = new Nav( nav_object );
 
-document.title = nav.get_title();
-
-var previous_href = window.location.href;
-var stateObj = { foo: "bar" };
-
-
-function change_url(url) {
-  if (! url) url = '/';
-  var new_href = location.protocol + "//" + location.hostname + url;
-  if (location.href == new_href) return;
-
-  if (browser_supports_pushState()) {
-    previous_href = window.location.href;
-    history.pushState(stateObj, null, url);
-    if (previous_href != window.location.href) change();
-  } else {
-    window.location.href = url;
-  }
-  return;
-}
-
-function browser_supports_pushState() {
-  return !(typeof history.pushState === 'undefined');
-}
-
-window.onpopstate = detect_href_change;
-window.onpushstate = detect_href_change;
-
-function detect_href_change(event) {
-  if (window.location.href != previous_href) {
-    previous_href = window.location.href;
-    change();
-  }
-}
-
-function change() {
-  document.title = nav.get_title();
-  breadcrumb.update();
-  sidenav.update();
-}
-
-function get_title(nav_path) {
-  var title = 'Default';
-
-  while (nav_path.length) {
-    if (typeof nav_object[nav_path] != 'undefined') return nav_object[nav_path];
-    var last_index_of_slash = nav_path.lastIndexOf('/');
-
-    if (last_index_of_slash > 0) {
-      nav_path = nav_path.substring(0, nav_path.lastIndexOf('/'));
-    } else {
-      return title;
-    }
-  }
-  return title;
-}
-
+var nav = new Nav( nav_object, update_callback );
 var a = new Anchor( $('#bar'), '/bar/bar', 'change to bar' );
-a.add_url_class();
 
 breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
 sidenav = new Sidenav( $( '#sidenav' ), nav );
 
+$('#breadcrumb_a_0').focus();
+
+function update_callback() {
+  if (breadcrumb.update) breadcrumb.update();
+  if (sidenav.update) sidenav.update();
+}
+nav.set_update_callback( update_callback ); 
