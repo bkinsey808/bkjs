@@ -18,12 +18,20 @@
 */
 #sidenav {
   float: left;
-  width: 20%;
+  width: 30%;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+}
+
+#sidenav ul {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #view {
   float: right;
-  width: 80%;
+  width: 69%;
 }
 
 #breadcrumb ul {
