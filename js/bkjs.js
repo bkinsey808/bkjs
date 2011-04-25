@@ -47,7 +47,7 @@ window.onpopstate = detect_href_change;
 window.onpushstate = detect_href_change;
 
 
-function  detect_href_change ( event ) {
+function detect_href_change ( event ) {
   if (window.location.href != this.previous_href) {
     nav.previous_href = window.location.href;
     nav.my_change();
@@ -59,4 +59,3 @@ $(window).hashchange( function(){
     detect_href_change();
   }
 });
-
