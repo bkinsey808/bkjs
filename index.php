@@ -21,10 +21,10 @@
 <html>
 <head>
   <title></title>
-<link rel="stylesheet" type="text/css" href="/css/bkjs.css" />
+<link rel="stylesheet" type="text/css" href="/css/index.css" />
 </head>
 <body>
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery-1.5.2.min.js"></script>
 <div id="header"></div>
 <div id="breadcrumb"></div>
 <div id="sidenav"></div>
@@ -39,7 +39,7 @@ Parameter: <?php print_r($_GET); ?>
 <script type="text/javascript" src="/js/Breadcrumb_Anchor.js"></script>
 <script type="text/javascript" src="/js/Sidenav.js"></script>
 <script type="text/javascript" src="/js/Sidenav_Item.js"></script>
-<script type="text/javascript" src="/js/bkjs.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
 </div>
 </body>
 </html>

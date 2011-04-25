@@ -8,7 +8,8 @@ License for most files: AGPLv3 copyright Ben Kinsey.
 Other licenses available for a small fee.
 
 Files I don't own the copyright of:
+
 js/Class.js: MIT license, copyright John Resig
 js/jquery-1.5.2.min.js: Dual Licensed: MIT/GPLv2, copyright John Resig
 and includes Sizzle.js, Triple Licensed: MIT/BSD/GPL, copyright Dojo Foundation
- 
+js/jquery.ba-hashchange.js: Dual Licensed: MIT/GPL, copyright Ben Alman
