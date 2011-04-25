@@ -26,8 +26,6 @@ var Nav = Class.extend({
     this.previous_href = window.location.href;
     this.set_pathname();
     document.title = this.get_title();
-    window.onpopstate = this.detect_href_change;
-    window.onpushstate = this.detect_href_change;
   },
   set_update_callback : function( update_callback ) {
     this.update_callback = update_callback;
@@ -129,9 +127,9 @@ var Nav = Class.extend({
     if (this.browser_supports_pushState()) {
       this.previous_href = window.location.href;
       history.pushState( stateObj, null, url );
-      if (this.previous_href != window.location.href) this.change();
+      if (this.previous_href != window.location.href) this.my_change();
     } else {
-      this.change( url );
+      this.my_change( url );
       window.location.href = '/#!' + url;
     }
     return;
@@ -139,13 +137,7 @@ var Nav = Class.extend({
   browser_supports_pushState : function() {
     return !(typeof history.pushState === 'undefined');
   },
-  detect_href_change : function( event ) {
-    if (window.location.href != this.previous_href) {
-      this.previous_href = window.location.href;
-      this.change();
-    }
-  },
-  change : function( url ) {
+  my_change : function( url ) {
     nav.set_pathname( url );
     document.title = this.get_title();
     if (this.update_callback) {

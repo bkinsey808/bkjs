@@ -30,6 +30,7 @@
 <div id="sidenav"></div>
 <div id="view"><a id="bar" ></a>
 Parameter: <?php print_r($_GET); ?>
+<script type="text/javascript" src="/js/jquery.ba-hashchange.js"></script>
 <script type="text/javascript" src="/js/Class.js"></script>
 <script type="text/javascript" src="/js/Nav.js"></script>
 <script type="text/javascript" src="/js/Anchor.js"></script>

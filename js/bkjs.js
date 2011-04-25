@@ -28,7 +28,6 @@ nav_object['/bar1/bar2b'] = 'Bar 2b';
 nav_object['/bar1/bar2b/a'] = 'Bar 2b a';
 nav_object['/bar1/bar2b/b'] = 'Bar 2b b';
 
-
 var nav = new Nav( nav_object, update_callback );
 var a = new Anchor( $('#bar'), '/bar/bar', 'change to bar' );
 
@@ -37,8 +36,27 @@ sidenav = new Sidenav( $( '#sidenav' ), nav );
 
 $('#breadcrumb_a_0').focus();
 
+
 function update_callback() {
   if (breadcrumb.update) breadcrumb.update();
   if (sidenav.update) sidenav.update();
 }
 nav.set_update_callback( update_callback ); 
+
+window.onpopstate = detect_href_change;
+window.onpushstate = detect_href_change;
+
+
+function  detect_href_change ( event ) {
+  if (window.location.href != this.previous_href) {
+    nav.previous_href = window.location.href;
+    nav.my_change();
+  }
+}
+
+$(window).hashchange( function(){
+  if (! nav.browser_supports_pushState()) {
+    detect_href_change();
+  }
+});
+
