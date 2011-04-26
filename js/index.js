@@ -31,8 +31,8 @@ nav_object['/bar1/bar2b/b'] = 'Bar 2b b';
 var nav = new Nav( nav_object );
 var a = new Anchor( $('#bar'), '/bar/bar', 'change to bar' );
 
-breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
-sidenav = new Sidenav( $( '#sidenav' ), nav );
+var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
+var sidenav = new Sidenav( $( '#sidenav' ), nav );
 
 $('#breadcrumb_a_0').focus();
 
