@@ -1,7 +1,7 @@
 /*
   bkjs: Ben Kinsey's Javascript Framework
   Copyright (C) 2011 Ben Kinsey
-  AGPLv3 License.  Other licenses available for a small fee.
+  AGPLv3 (or higher) License.  Other licenses available for a small fee.
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as

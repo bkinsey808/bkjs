@@ -1,7 +1,7 @@
 /*
   bkjs: Ben Kinsey's Javascript Framework
   Copyright (C) 2011 Ben Kinsey
-  AGPLv3 License.  Other licenses available for a small fee.
+  AGPLv3 (or higher) License.  Other licenses available for a small fee.
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@ var Nav = Class.extend({
     var self = this;
     window.onpopstate = function() { self.pop_or_push(); };
     window.onpushstate = function() { self.pop_or_push(); };
-    $(window).hashchange( function() { self.do_hash_change(); } );
+    $(window).hashchange( function() { self.detect_href_change(); } );
   },
   pop_or_push : function() { 
     this.previous_href = window.location.href;
@@ -168,11 +168,6 @@ var Nav = Class.extend({
     if (window.location.href != this.previous_href) {
       this.previous_href = window.location.href;
       this.update_to_url();
-    }
-  },
-  do_hash_change : function() {
-    if (! this.browser_supports_pushState()) {
-      this.detect_href_change();
     }
   }
 });
