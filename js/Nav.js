@@ -29,18 +29,13 @@ var Nav = Class.extend({
     document.title = this.get_title();
 
     var self = this;
-    window.onpopstate = function() { self.set_previous_and_update_to_url(); };
-    window.onpushstate = function() { self.set_previous_and_update_to_url(); };
-    $(window).hashchange( function() { self.detect_href_change(); } );
+    window.onpopstate = function() { self.set_prev_and_update_to_url(); };
+    window.onpushstate = function() { self.set_prev_and_update_to_url(); };
+    $(window).hashchange( function() { self.set_prev_and_update_to_url() } );
   },
-  set_previous_and_update_to_url : function() { 
+  set_prev_and_update_to_url : function() { 
     this.previous_href = window.location.href;
     this.update_to_url();
-  },
-  detect_href_change : function () {
-    if (window.location.href != this.previous_href) {
-      this.set_previous_and_update_to_url();
-    }
   },
   update_to_url : function( url ) {
     this.set_pathname( this.strip_home_url( url ) );
