@@ -17,29 +17,31 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$home_url = '/';
 ?>
 <html>
 <head>
   <title></title>
-<link rel="stylesheet" type="text/css" href="/css/index.css" />
+<link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
 <body>
-<script type="text/javascript" src="/js/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.5.2.min.js"></script>
 <div id="header"></div>
 <div id="breadcrumb"></div>
 <div id="sidenav"></div>
 <div id="view"><a id="bar" ></a>
 Parameter: <?php print_r($_GET); ?>
-<script type="text/javascript" src="/js/jquery.ba-hashchange.js"></script>
-<script type="text/javascript" src="/js/Class.js"></script>
-<script type="text/javascript" src="/js/Nav.js"></script>
-<script type="text/javascript" src="/js/Anchor.js"></script>
-<script type="text/javascript" src="/js/Breadcrumb.js"></script>
-<script type="text/javascript" src="/js/Breadcrumb_Link.js"></script>
-<script type="text/javascript" src="/js/Breadcrumb_Anchor.js"></script>
-<script type="text/javascript" src="/js/Sidenav.js"></script>
-<script type="text/javascript" src="/js/Sidenav_Item.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="js/jquery.ba-hashchange.js"></script>
+<script type="text/javascript" src="js/Class.js"></script>
+<script type="text/javascript" src="js/Nav.js"></script>
+<script type="text/javascript" src="js/Anchor.js"></script>
+<script type="text/javascript" src="js/Breadcrumb.js"></script>
+<script type="text/javascript" src="js/Breadcrumb_Link.js"></script>
+<script type="text/javascript" src="js/Breadcrumb_Anchor.js"></script>
+<script type="text/javascript" src="js/Sidenav.js"></script>
+<script type="text/javascript" src="js/Sidenav_Item.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 </div>
 </body>
 </html>

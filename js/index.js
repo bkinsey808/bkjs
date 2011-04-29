@@ -36,26 +36,17 @@ var sidenav = new Sidenav( $( '#sidenav' ), nav );
 
 $('#breadcrumb_a_0').focus();
 
-
 function update_callback() {
   if (breadcrumb && breadcrumb.update) breadcrumb.update();
   if (sidenav && sidenav.update) sidenav.update();
 }
 nav.set_update_callback( update_callback ); 
 
-window.onpopstate = detect_href_change;
-window.onpushstate = detect_href_change;
+window.onpopstate = function() { nav.pop_or_push( nav ) };
+window.onpushstate = function() { nav.pop_or_push( nav ) };
 
-
-function detect_href_change ( event ) {
-  if (window.location.href != this.previous_href) {
-    nav.previous_href = window.location.href;
-    nav.my_change();
-  }
-}
-
-$(window).hashchange( function(){
+$(window).hashchange( function() {
   if (! nav.browser_supports_pushState()) {
-    detect_href_change();
+    nav.detect_href_change( nav );
   }
 });

@@ -17,29 +17,42 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var Nav = Class.extend({
-  init : function( nav_object, update_callback ) {
-    if (! this.browser_supports_pushState() && ! location.hash) {
-      window.location = '/#!' + location.pathname;
-    }
+  init : function( nav_object, home_url ) {
     this.nav_object = nav_object;
-    if (update_callback) this.update_callback = update_callback();
+    this.home_url = '';
+    if (home_url) this.home_url = home_url;
+    if (! this.browser_supports_pushState() && ! location.hash) {
+      window.location = this.home_url + '/#!' + location.pathname;
+    }
     this.previous_href = window.location.href;
     this.set_pathname();
     document.title = this.get_title();
+  },
+  pop_or_push : function( nav ) { 
+    nav.previous_href = window.location.href;
+    nav.update_to_url();
   },
   set_update_callback : function( update_callback ) {
     this.update_callback = update_callback;
   },
   set_pathname : function( url ) {
-    if (url) { 
+    if (url) {
       this.pathname = url;
       return;
     }
-    if ( location.hash && location.pathname == '/') {
+    if (location.hash && location.pathname == this.home_url + '/') {
       this.pathname = location.hash.substring( 2 );
     } else {
-      this.pathname = location.pathname;
+      this.pathname = this.strip_home_url( location.pathname );
     }
+  },
+  strip_home_url : function( url ) {
+    if (! url) return;
+
+    if (url.indexOf( this.home_url ) == 0) {
+      return url.substring( this.home_url.length );
+    }
+    return url;
   },
   get_title : function() {
     return this.get_title_by_url( this.pathname );
@@ -121,27 +134,37 @@ var Nav = Class.extend({
   change_url : function( url ) {
     var stateObj = { foo: "bar" };
     if (! url) url = '/';
-    var new_href = location.protocol + "//" + location.hostname + url;
+    var new_href = location.protocol + "//" + location.hostname + this.home_url + url;
     if (location.href == new_href) return;
 
     if (this.browser_supports_pushState()) {
       this.previous_href = window.location.href;
-      history.pushState( stateObj, null, url );
-      if (this.previous_href != window.location.href) this.my_change();
+      var new_url = this.home_url + url;
+      alert("new_url" + new_url);
+      history.pushState( stateObj, null, this.home_url + url );
+      if (this.previous_href != window.location.href) { 
+	  alert("update to url");
+	this.update_to_url( this.home_url + url);
+      }
     } else {
-      this.my_change( url );
-      window.location.href = '/#!' + url;
+      window.location.href = this.home_url + '/#!' + url;
     }
     return;
   },
   browser_supports_pushState : function() {
     return !(typeof history.pushState === 'undefined');
   },
-  my_change : function( url ) {
-    nav.set_pathname( url );
+  update_to_url : function( url ) {
+    this.set_pathname( this.strip_home_url( url ) );
     document.title = this.get_title();
     if (this.update_callback) {
       this.update_callback();
+    }
+  },
+  detect_href_change : function ( nav ) {
+    if (window.location.href != nav.previous_href) {
+      nav.previous_href = window.location.href;
+      nav.update_to_url();
     }
   }
 });
