@@ -29,9 +29,12 @@ var Nav = Class.extend({
     document.title = this.get_title();
 
     var self = this;
-    window.onpopstate = function() { self.set_prev_and_update_to_url(); };
-    window.onpushstate = function() { self.set_prev_and_update_to_url(); };
-    $(window).hashchange( function() { self.set_prev_and_update_to_url() } );
+    var update_func = function() { 
+      self.set_prev_and_update_to_url(); 
+    };
+    window.onpopstate = update_func;
+    window.onpushstate = update_func;
+    $(window).hashchange( update_func );
   },
   set_prev_and_update_to_url : function() { 
     this.previous_href = window.location.href;
