@@ -42,11 +42,5 @@ function update_callback() {
 }
 nav.set_update_callback( update_callback ); 
 
-window.onpopstate = function() { nav.pop_or_push( nav ) };
-window.onpushstate = function() { nav.pop_or_push( nav ) };
 
-$(window).hashchange( function() {
-  if (! nav.browser_supports_pushState()) {
-    nav.detect_href_change( nav );
-  }
-});
+

@@ -27,10 +27,15 @@ var Nav = Class.extend({
     this.previous_href = window.location.href;
     this.set_pathname();
     document.title = this.get_title();
+
+    var self = this;
+    window.onpopstate = function() { self.pop_or_push(); };
+    window.onpushstate = function() { self.pop_or_push(); };
+    $(window).hashchange( function() { self.do_hash_change(); } );
   },
-  pop_or_push : function( nav ) { 
-    nav.previous_href = window.location.href;
-    nav.update_to_url();
+  pop_or_push : function() { 
+    this.previous_href = window.location.href;
+    this.update_to_url();
   },
   set_update_callback : function( update_callback ) {
     this.update_callback = update_callback;
@@ -140,10 +145,8 @@ var Nav = Class.extend({
     if (this.browser_supports_pushState()) {
       this.previous_href = window.location.href;
       var new_url = this.home_url + url;
-      alert("new_url" + new_url);
       history.pushState( stateObj, null, this.home_url + url );
       if (this.previous_href != window.location.href) { 
-	  alert("update to url");
 	this.update_to_url( this.home_url + url);
       }
     } else {
@@ -161,10 +164,15 @@ var Nav = Class.extend({
       this.update_callback();
     }
   },
-  detect_href_change : function ( nav ) {
-    if (window.location.href != nav.previous_href) {
-      nav.previous_href = window.location.href;
-      nav.update_to_url();
+  detect_href_change : function () {
+    if (window.location.href != this.previous_href) {
+      this.previous_href = window.location.href;
+      this.update_to_url();
+    }
+  },
+  do_hash_change : function() {
+    if (! this.browser_supports_pushState()) {
+      this.detect_href_change();
     }
   }
 });
