@@ -35,6 +35,7 @@ Parameter: <?php print_r($_GET); ?>
 <script type="text/javascript" src="js/jquery.ba-hashchange.js"></script>
 <script type="text/javascript" src="js/Class.js"></script>
 <script type="text/javascript" src="js/Nav.js"></script>
+<script type="text/javascript" src="js/View.js"></script>
 <script type="text/javascript" src="js/Anchor.js"></script>
 <script type="text/javascript" src="js/Breadcrumb.js"></script>
 <script type="text/javascript" src="js/Breadcrumb_Link.js"></script>

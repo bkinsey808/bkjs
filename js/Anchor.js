@@ -33,4 +33,4 @@ var Anchor = Class.extend({
   update_display : function( display ) {
     this.elem.html(this.display);
   }
-    });
+});

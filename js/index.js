@@ -29,7 +29,19 @@ nav_object['/bar1/bar2b/a'] = 'Bar 2b a';
 nav_object['/bar1/bar2b/b'] = 'Bar 2b b';
 
 var nav = new Nav( nav_object );
-var a = new Anchor( $('#bar'), '/bar/bar', 'change to bar' );
+var view = new View();
+
+var params = {
+    elem : $('#bar'),
+    url :  '/bar/bar',
+    display : 'change to bar'
+};
+
+var a;
+
+view.load( 'A', function() {
+    a = view.get( 'A', params );
+});
 
 var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
 var sidenav = new Sidenav( $( '#sidenav' ), nav );
@@ -41,6 +53,3 @@ function update_callback() {
   if (sidenav && sidenav.update) sidenav.update();
 }
 nav.set_update_callback( update_callback ); 
-
-
-
