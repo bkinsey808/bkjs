@@ -40,7 +40,6 @@ var Nav = Class.extend({
     },
 
     set_prev_and_update_to_url : function() { 
-	alert('set prev and update');
 	this.previous_href = window.location.href;
 	this.update_to_url();
     },
