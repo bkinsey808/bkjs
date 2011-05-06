@@ -34,14 +34,14 @@ var view = new View();
 var params = {
     elem : $('#bar'),
     url :  '/bar/bar',
-    display : 'change to bar'
+    display : 'change to bar',
+    id: 'bar'
 };
 
-var a;
-
-view.load( 'A', function() {
-    a = view.get( 'A', params );
+view.load_multiple( ['Breadcrumb_A'], function() {
+    view.set( 'ba', 'Breadcrumb_A', params );
 });
+
 
 var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
 var sidenav = new Sidenav( $( '#sidenav' ), nav );
@@ -49,7 +49,8 @@ var sidenav = new Sidenav( $( '#sidenav' ), nav );
 $('#breadcrumb_a_0').focus();
 
 function update_callback() {
-  if (breadcrumb && breadcrumb.update) breadcrumb.update();
-  if (sidenav && sidenav.update) sidenav.update();
+    if (breadcrumb && breadcrumb.update) breadcrumb.update();
+    if (sidenav && sidenav.update) sidenav.update();
 }
 nav.set_update_callback( update_callback ); 
+

@@ -17,23 +17,39 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 {
-  init : function( params ) {
-    this.elem = params.elem;
-    this.update( params.url, params.display );
-  },  
+    parent : 'A', 
 
-  add_url_class : function() {
-    this.elem.addClass(this.url.replace(/\//g, "__"));
-  },
+    init : function( params ) {
+	if (params.elem) this.elem = params.elem;
+	if (params.id) this.id = params.id;
+	var span_id = this.get_span_id(); 
 
-  update : function ( url, display ) {
-    if (url) this.url = url;
-    if (display) this.display = display;
-    this.update_display();
-    this.elem.attr("href", "javascript:nav.change_url('" + url + "')");
-  },
+	if ($( '#' + span_id ).length) {
+	    this.span_elem = $( '#' + span_id );
+	} else {
+	    this.span_elem = $( '<span/>' );
+	    this.span_elem.attr( 'itemprop', 'title' );
+	    this.elem.append( this.span_elem );
+	}
 
-  update_display : function( display ) {
-    this.elem.html(this.display);
-  }
+	this._super( params );
+	this.elem.attr( 'itemprop', 'url' );
+    },
+
+
+    update : function( url, display, id ) {
+	this._super( url, display );
+	if (id) this.id = id;
+	this.elem.attr( 'id', this.id );
+	this.span_elem.attr( 'id', this.get_span_id() );
+    },
+
+
+    get_span_id : function() {
+	return this.id + '_span';
+    },
+
+    update_display : function() {
+	this.span_elem.html(this.display);
+    }
 }
