@@ -17,100 +17,100 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 {
-    required_classes : ['Breadcrumb_Link'],
-    max_breadcrumb_links : 10,
+	required_classes : ['Breadcrumb_Link'],
+	max_breadcrumb_links : 10,
 
-    // required: elem, nav
-    // optional: breadcrumb_id
-    init : function( params ) {
+	// required: elem, nav
+	// optional: breadcrumb_id
+	init : function( params ) {
 
-	this.elem = params.elem;
-	this.nav = params.nav;
-	if (params.breadcrumb_id) {
-	    this.breadcrumb_id = params.breadcrumb_id;
-	} else {
-	    this.breadcrumb_id = this.elem.attr('id');
+		this.elem = params.elem;
+		this.nav = params.nav;
+		if (params.breadcrumb_id) {
+			this.breadcrumb_id = params.breadcrumb_id;
+		} else {
+			this.breadcrumb_id = this.elem.attr('id');
+		}
+		this.breadcrumb_links = [];
+
+		if ($( '#' + this.breadcrumb_id + '_nav' ).length) {
+			this.breadcrumb_nav = $( '#' + this.breadcrumb_id + '_nav' );
+		} else {
+			this.breadcrumb_nav = $( '<nav/>' );
+			this.elem.append( this.breadcrumb_nav );
+		}
+
+		if ($( '#' + this.breadcrumb_id + '_ul' ).length) {
+			this.breadcrumb_ul = $( '#' + this.breadcrumb_id + '_ul' );
+		} else {
+			this.breadcrumb_ul = $( '<ul/>' );
+			this.breadcrumb_nav.append( this.breadcrumb_ul );
+		}
+
+		this.update( params );
+	},
+
+	// optional : nav, breadcrumb_id
+	update : function( params ) {
+		if (params && params.nav) this.nav = params.nav;
+		if (params && params.breadcrumb_id) this.breadcrumb_id = params.breadcrumb_id;
+		var current_level = this.nav.get_level();
+
+		for (var i = 0; i <= current_level; i++) {
+			var url = this.nav.get_url_by_level(i);
+			var url_level = this.nav.get_level_by_url( url );
+
+			if (this.nav.url_exists( url ) && url_level == i) {
+				this.set_link_at_level( i, url );
+			} else {
+				this.remove_link_at_level(i);
+			}
+		}
+
+		for (var i = current_level + 1; i <= this.max_breadcrumb_links; i++) {
+			this.remove_link_at_level(i);
+		}
+	},
+
+	set_link_at_level : function( level, url ) {
+		var display = this.nav.get_title_by_level( level );
+
+		var params = {
+			
+			url : url,
+			display : display,
+			level : level,
+			breadcrumb_id : this.breadcrumb_id
+		};
+
+		if (this.breadcrumb_links[level]) {
+			this.breadcrumb_links[level].update( params );
+		} else {
+			this.add_link_at_level( params );
+		}
+	},
+
+	add_link_at_level : function( params ) {
+		var bld;
+		var link_id = this.get_breadcrumb_link_id( params.level );
+
+		if ($( '#' + link_id ).length) {
+			bld = $( '#' + link_id );
+		} else {
+			bld = $( '<li/>' );
+			this.breadcrumb_ul.append( bld );
+		}
+		params.elem = bld;
+		this.breadcrumb_links[params.level] = view.set(link_id, 'Breadcrumb_Link', params);
+	},
+
+	remove_link_at_level : function( level ) {
+		link_id = this.get_breadcrumb_link_id( level );
+		if ($( '#' + link_id) ) $( '#' + link_id ).remove();
+		this.breadcrumb_links[level] = null;
+	},
+
+	get_breadcrumb_link_id : function( level ) {
+		return this.breadcrumb_id + '_' + level;
 	}
-	this.breadcrumb_links = [];
-
-	if ($( '#' + this.breadcrumb_id + '_nav' ).length) {
-	    this.breadcrumb_nav = $( '#' + this.breadcrumb_id + '_nav' );
-	} else {
-	    this.breadcrumb_nav = $( '<nav/>' );
-	    this.elem.append( this.breadcrumb_nav );
-	}
-
-	if ($( '#' + this.breadcrumb_id + '_ul' ).length) {
-	    this.breadcrumb_ul = $( '#' + this.breadcrumb_id + '_ul' );
-	} else {
-	    this.breadcrumb_ul = $( '<ul/>' );
-	    this.breadcrumb_nav.append( this.breadcrumb_ul );
-	}
-
-	this.update( params );
-    },
-
-    // optional : nav, breadcrumb_id
-    update : function( params ) {
-	if (params && params.nav) this.nav = params.nav;
-	if (params && params.breadcrumb_id) this.breadcrumb_id = params.breadcrumb_id;
-	var current_level = this.nav.get_level();
-
-	for (var i = 0; i <= current_level; i++) {
-	    var url = this.nav.get_url_by_level(i);
-	    var url_level = this.nav.get_level_by_url( url );
-
-	    if (this.nav.url_exists( url ) && url_level == i) {
-		this.set_link_at_level( i, url );
-	    } else {
-		this.remove_link_at_level(i);
-	    }
-	}
-
-	for (var i = current_level + 1; i <= this.max_breadcrumb_links; i++) {
-	    this.remove_link_at_level(i);
-	}
-    },
-
-    set_link_at_level : function( level, url ) {
-	var display = this.nav.get_title_by_level( level );
-
-        var params = {
-		
-	    url : url,
-	    display : display,
-	    level : level,
-	    breadcrumb_id : this.breadcrumb_id
-	};
-
-	if (this.breadcrumb_links[level]) {
-	    this.breadcrumb_links[level].update( params );
-	} else {
-	    this.add_link_at_level( params );
-	}
-    },
-
-    add_link_at_level : function( params ) {
-	var bld;
-	var link_id = this.get_breadcrumb_link_id( params.level );
-
-	if ($( '#' + link_id ).length) {
-	    bld = $( '#' + link_id );
-	} else {
-	    bld = $( '<li/>' );
-	    this.breadcrumb_ul.append( bld );
-	}
-	params.elem = bld;
-	this.breadcrumb_links[params.level] = view.set(link_id, 'Breadcrumb_Link', params);
-    },
-
-    remove_link_at_level : function( level ) {
-	link_id = this.get_breadcrumb_link_id( level );
-	if ($( '#' + link_id) ) $( '#' + link_id ).remove();
-	this.breadcrumb_links[level] = null;
-    },
-
-    get_breadcrumb_link_id : function( level ) {
-	return this.breadcrumb_id + '_' + level;
-    }
 }

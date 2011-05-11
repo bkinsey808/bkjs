@@ -34,21 +34,21 @@ var breadcrumb, sidenav;
 
 view.load_multiple( ['Anchor', 'Breadcrumb'], function() {
 
-    var anchor_params = {
-	elem : $('#bar'),
-	url :  '/bar/bar',
-	display : 'change to bar',
-	id: 'bar'
-    };
+	var anchor_params = {
+		elem : $('#bar'),
+		url :  '/bar/bar',
+		display : 'change to bar',
+		id: 'bar'
+	};
 
-    view.set( 'ba', 'Anchor', anchor_params );
+	view.set( 'ba', 'Anchor', anchor_params );
 
-    var breadcrumb_params = {
-	elem : $( '#breadcrumb' ),
-	nav : nav
-    }
+	var breadcrumb_params = {
+		elem : $( '#breadcrumb' ),
+		nav : nav
+	}
 
-    breadcrumb = view.set( 'breadcrumb', 'Breadcrumb', breadcrumb_params );
+	breadcrumb = view.set( 'breadcrumb', 'Breadcrumb', breadcrumb_params );
 });
 
 
@@ -58,8 +58,8 @@ var sidenav = new Sidenav( $( '#sidenav' ), nav );
 $('#breadcrumb_a_0').focus();
 
 function update_callback() {
-    if (breadcrumb && breadcrumb.update) breadcrumb.update();
-    if (sidenav && sidenav.update) sidenav.update();
+	if (breadcrumb && breadcrumb.update) breadcrumb.update();
+	if (sidenav && sidenav.update) sidenav.update();
 }
 nav.set_update_callback( update_callback ); 
 

@@ -17,30 +17,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 {
-    // elem, url, display
-    init : function( params ) {
-	this.elem = params.elem;
-	this.update( params );
-    },
+	// elem, url, display
+	init : function( params ) {
+		this.elem = params.elem;
+		this.update( params );
+	},
 
-    add_url_class : function() {
-	this.elem.addClass(this.url.replace(/\//g, '__'));
-    },
+	add_url_class : function() {
+		this.elem.addClass(this.url.replace(/\//g, '__'));
+	},
 
-    // url, display
-    update : function ( params ) {
+	// url, display
+	update : function ( params ) {
 
-	if (params.id) this.id = params.id;	
-	if (params.url) this.url = params.url;
-	if (params.display) this.display = params.display;
-	this.update_display();
-	this.elem.attr('href', "javascript:nav.change_url('" + this.url + "')");
-	if (this.id) {
-	   this.elem.attr('id', this.id);
+		if (params.id) this.id = params.id;	
+		if (params.url) this.url = params.url;
+		if (params.display) this.display = params.display;
+		this.update_display();
+		this.elem.attr('href', "javascript:nav.change_url('" + this.url + "')");
+		if (this.id) {
+			this.elem.attr('id', this.id);
+		}
+	},
+
+	update_display : function( display ) {
+		this.elem.html(this.display);
 	}
-    },
-
-    update_display : function( display ) {
-	this.elem.html(this.display);
-    }
 }
