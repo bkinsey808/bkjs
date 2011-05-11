@@ -20,14 +20,20 @@ var View = Class.extend({
     classes : {},
     objects : {},
 
+    // more optimization might be possible: 
+    //if we don't care the order these json views are loaded,
+    // then we can request them all without waiting for the return
+    // and have the callbacks check to see if they all of the views have been loaded
+    // if so, run the final callback
     load_multiple : function( class_names, callback ) {
+	if (! class_names) return callback();
 	var len = class_names.length;
 	if (len == 0) return callback();
 
 	if (len == 1) {
 	    return this.load( class_names[0], callback );
 	}
-
+	
 	var last_class_name = class_names.pop();
 	var self = this;
 
@@ -37,7 +43,6 @@ var View = Class.extend({
     },
 
     load : function( class_name, callback ) {
-
 	if (this.classes[class_name]) return callback();	
 
 	if (this.browser_supports_localStorage()) {
@@ -45,12 +50,12 @@ var View = Class.extend({
 	    if (localStorage['View.' + class_name]) { 
 		var localStorage_key = this.get_localStorage_key( class_name );
 		var json_text = localStorage[localStorage_key];
-		return this.set_view_from_json_text( class_name, json_text, callback );
+		//return this.set_view_from_json_text( class_name, json_text, callback );
 	    }
 	}
 
 	var self = this;
-	var json_path = 'json/view/' + class_name + '.json';
+	var json_path = nav.home_url + '/json/view/' + class_name + '.json';
 
 	$.ajax(json_path, {
 	    dataType: "text",
@@ -63,14 +68,29 @@ var View = Class.extend({
 	});
     },
 
+    // more optimization might be possible:
+    // we can combine the parent_class and the required_classes into one single
+    // load multiple operation, which could itself be further optimized.
     set_view_from_json_text : function( class_name, json_text, callback ) {
 	var json = eval( '(' +  json_text + ')' );
-
 	var self = this;
 
-	if (json.parent) {
-	    this.load( json.parent, function() {
-		var Parent_Class = self.classes[json.parent];
+	if ( json.required_classes ) {
+
+	    this.load_multiple( json.required_classes, function() {
+		self.finish_set_view_from_json_text( class_name, json, callback );
+	    });
+	} else {
+	    this.finish_set_view_from_json_text( class_name, json, callback );
+	}
+    },
+
+    finish_set_view_from_json_text : function( class_name, json, callback ) {
+	var self = this;
+
+	if (json.parent_class) {
+	    this.load( json.parent_class, function() {
+		var Parent_Class = self.classes[json.parent_class];
 		self.classes[class_name] = Parent_Class.extend( json );
 		return callback();
 	    });
@@ -82,6 +102,7 @@ var View = Class.extend({
 
     json_success : function( json_text, class_name, callback ) {
 	var self = this;
+
 	this.set_view_from_json_text( class_name, json_text, function() {	    
 	    self.maybe_store_json_text( class_name, json_text );
 	    return callback();
@@ -89,6 +110,7 @@ var View = Class.extend({
     },
 
     maybe_store_json_text : function ( class_name, json_text ) {
+
 	if (this.browser_supports_localStorage()) {
 	    var localStorage_key = this.get_localStorage_key( class_name );
 	    localStorage[localStorage_key] = json_text;

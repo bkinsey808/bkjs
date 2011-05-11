@@ -1,0 +1,73 @@
+/*
+  bkjs: Ben Kinsey's Javascript Framework
+  Copyright (C) 2011 Ben Kinsey
+  AGPLv3 License.  Other licenses available for a small fee.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+{
+    required_classes : ['Breadcrumb_Anchor'],
+
+    //required: elem, url, display, level, breadcrumb_id
+    init : function( params ) {
+	this.elem = params.elem;
+	this.url = params.url;
+	this.display = params.display;
+	this.level = params.level;
+	this.breadcrumb_id = params.breadcrumb_id;
+	var anchor_id = this.get_anchor_id();
+
+	if ($( '#' + anchor_id ).length) {
+	    this.anchor_elem = $( '#' + anchor_id );
+	} else {
+	    this.anchor_elem = $( '<a/>' );
+	    this.elem.append( this.anchor_elem );
+	}
+	this.elem.attr( 'itemscope', 'itemscope' );
+	this.elem.attr( 'itemtype', 'http://data-vocabulary.org/Breadcrumb' );
+	this.elem.append( this.anchor_elem );
+	this.elem.append( ' &gt;' );
+
+	var breadcrumb_anchor_params = {
+	    elem : this.anchor_elem,
+	    url : this.url,
+	    display : this.display,
+	    id : this.get_anchor_id()
+	};
+	this.breadcrumb_anchor = view.set(params.id, 'Breadcrumb_Anchor', breadcrumb_anchor_params);
+	this.update( params );
+    },
+
+    // optional: url, display, level, breadcrumb_id
+    update : function( params ) {
+	if (params.url) this.url = params.url;
+	if (params.display) this.display = params.display;
+	if (params.level) this.level = params.level;
+	if (params.breadcrumb_id) this.breadcrumb_id = params.breadcrumb_id;
+	this.elem.attr( 'id', this.breadcrumb_id + '_' + this.level );
+
+	var breadcrumb_anchor_params = {
+	    elem : this.anchor_elem,
+	    url : this.url, 
+	    display : this.display,
+	    id : this.get_anchor_id()
+	};
+
+	this.breadcrumb_anchor.update( breadcrumb_anchor_params );
+    },
+
+    get_anchor_id : function() {
+	return 'id', this.breadcrumb_id + '_a_' + this.level;
+    }
+}

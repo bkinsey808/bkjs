@@ -1,4 +1,4 @@
-/*
+ /*
   bkjs: Ben Kinsey's Javascript Framework
   Copyright (C) 2011 Ben Kinsey
   AGPLv3 (or higher) License.  Other licenses available for a small fee.

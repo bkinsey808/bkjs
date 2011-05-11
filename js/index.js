@@ -30,20 +30,29 @@ nav_object['/bar1/bar2b/b'] = 'Bar 2b b';
 
 var nav = new Nav( nav_object );
 var view = new View();
+var breadcrumb, sidenav;
 
-var params = {
-    elem : $('#bar'),
-    url :  '/bar/bar',
-    display : 'change to bar',
-    id: 'bar'
-};
+view.load_multiple( ['Anchor', 'Breadcrumb'], function() {
 
-view.load_multiple( ['Breadcrumb_A'], function() {
-    view.set( 'ba', 'Breadcrumb_A', params );
+    var anchor_params = {
+	elem : $('#bar'),
+	url :  '/bar/bar',
+	display : 'change to bar',
+	id: 'bar'
+    };
+
+    view.set( 'ba', 'Anchor', anchor_params );
+
+    var breadcrumb_params = {
+	elem : $( '#breadcrumb' ),
+	nav : nav
+    }
+
+    breadcrumb = view.set( 'breadcrumb', 'Breadcrumb', breadcrumb_params );
 });
 
 
-var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
+//var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
 var sidenav = new Sidenav( $( '#sidenav' ), nav );
 
 $('#breadcrumb_a_0').focus();
