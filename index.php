@@ -45,12 +45,6 @@ Parameter: <?php print_r($_GET); ?>
 <script type="text/javascript" 
 	src="<?php echo $home_url ?>/js/Anchor.js"></script>
 <script type="text/javascript" 
-	src="<?php echo $home_url ?>/js/Breadcrumb.js"></script>
-<script type="text/javascript" 
-	src="<?php echo $home_url ?>/js/Breadcrumb_Link.js"></script>
-<script type="text/javascript" 
-	src="<?php echo $home_url ?>/js/Breadcrumb_Anchor.js"></script>
-<script type="text/javascript" 
 	src="<?php echo $home_url ?>/js/Sidenav.js"></script>
 <script type="text/javascript" 
 	src="<?php echo $home_url ?>/js/Sidenav_Item.js"></script>

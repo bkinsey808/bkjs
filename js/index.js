@@ -32,7 +32,7 @@ var nav = new Nav( nav_object );
 var view = new View();
 var breadcrumb, sidenav;
 
-view.load_multiple( ['Anchor', 'Breadcrumb'], function() {
+view.load_multiple( ['Anchor', 'Breadcrumb', 'Sidenav'], function() {
 
 	var anchor_params = {
 		elem : $('#bar'),
@@ -49,11 +49,18 @@ view.load_multiple( ['Anchor', 'Breadcrumb'], function() {
 	}
 
 	breadcrumb = view.set( 'breadcrumb', 'Breadcrumb', breadcrumb_params );
+
+	var sidenav_params = {
+		elem : $( '#sidenav' ),
+		nav : nav
+	}
+
+	sidenav = view.set( 'sidenav', 'Sidenav', sidenav_params );
 });
 
 
 //var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
-var sidenav = new Sidenav( $( '#sidenav' ), nav );
+//var sidenav = new Sidenav( $( '#sidenav' ), nav );
 
 $('#breadcrumb_a_0').focus();
 
