@@ -59,9 +59,6 @@ view.load_multiple( ['Anchor', 'Breadcrumb', 'Sidenav'], function() {
 });
 
 
-//var breadcrumb = new Breadcrumb( $( '#breadcrumb' ), nav );
-//var sidenav = new Sidenav( $( '#sidenav' ), nav );
-
 $('#breadcrumb_a_0').focus();
 
 function update_callback() {
